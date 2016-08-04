@@ -1,0 +1,38 @@
+#include<cstdio>
+
+
+int main(){
+    int h, v, pos, n_imagens;
+    int mtx[20][20];
+
+    while(scanf(" %d %d", &v, &h) == 2){
+        n_imagens = 0;
+        
+        for (int i = 0; i<=h+1; ++i)
+            for (int j = 0; j<=v+1; ++j)
+                mtx[i][j] = 0;
+
+        for (int i = 1; i<=h; ++i)
+            for (int j = 1; j<=v; ++j){
+                scanf(" %d", &pos);
+                mtx[i][j] = pos;
+            }
+
+        for (int i = 1; i<=h; ++i){
+            for (int j = 1; j<=v; ++j){
+                if (mtx[i][j]){
+                   if(!mtx[i][j-1] && !mtx[i-1][j]) {
+                       ++n_imagens;
+                   }
+                   else if (mtx[i][j-1] && mtx[i-1][j] && !mtx[i-1][j-1]){
+                       --n_imagens;
+                   }
+                }
+            }
+        }
+
+        printf("%d\n", n_imagens);
+    }
+
+    return 0;
+}
