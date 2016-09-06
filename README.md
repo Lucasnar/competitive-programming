@@ -4,4 +4,4 @@ The purpose of this repository is to store my solutions for programming problems
 
 Alert: **There may be programs that are not completed and do not solve the problems they are related to.**
 
-Feel free to contact me should you have any questions.
+Feel free to contact me at *lucasnar@gmail.com* should you have any questions.
