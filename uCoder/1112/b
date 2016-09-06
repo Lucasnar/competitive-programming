@@ -1,4 +1,0 @@
-make[1]: Entering directory '/home/lucasnar/Maratona/uCoder/1112'
-g++ 1112.cpp -o 1112 && ./1112 < input
-1 1 0 0 0 0 0 0 1 1 0 0 0 1 1 0 0 0 1 1 1 0 0 0 1 0 0 1 1 1 1 1 1 0 1 1 0 1 0 1 1 1 0 0 1 1 1 1 1 0 1 0 1 1 1 1 1 1 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 1 0 0 0 0 0 1 1 0 1 0 0 1 0 0 0 1 0 1 0 0 0 0 0 0 0 1 0 0 1 1 0 0 0 0 0 1 0 0 0 1
-make[1]: Leaving directory '/home/lucasnar/Maratona/uCoder/1112'
