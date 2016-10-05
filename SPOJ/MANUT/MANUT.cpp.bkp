@@ -1,0 +1,88 @@
+// RECEIVING TLE
+// SO NOT FINISHED
+// SOMEBODY HELP
+// Y M I SO NOOB?
+
+#include<cstdio>
+#include<algorithm>
+#include<stdlib.h>
+#include<vector>
+#include<iostream>
+#include<map>
+#include<queue>
+#include<cstdlib>
+#include<cstring>
+#include<string>
+#include<set>
+
+using namespace std;
+
+const int inf = 0x3f3f3f3f;
+const int maxn = 528;
+
+int graph[maxn][maxn];
+int resp[maxn];
+int visited[maxn];
+int n, m, x, y, c=0;
+
+typedef long long int huge;
+
+void dfs(int v){
+
+    visited[v] = 1;
+
+    for(int i = 0; i<n; ++i)
+        if(graph[v][i] && !visited[i])
+            dfs(i);
+}
+
+int main(){
+
+    while(1){
+
+        scanf(" %d %d", &n, &m);
+
+        if(!n) break;
+
+        printf("Teste %d\n", ++c);
+
+        for(int i = 0; i<n; ++i){
+            for(int j = 0; j<n; ++j)
+                graph[i][j] = 0;
+            visited[i] = 0;
+        }
+
+        for(int i = 0; i<m; ++i){
+            scanf(" %d %d", &x, &y);
+            graph[--x][--y] = graph[y][x] = 1;
+        }
+
+        int k=0;
+        for(int i = 0; i<n; ++i){
+            visited[i] = 1;
+            dfs((i+1) % n);
+            //for(int j= 0; j<n; ++j)
+                //printf("%d ", visited[j]);
+            //printf("\n");
+
+            for(int j= 0; j<n; ++j){
+                if(!visited[j] && j != i){
+                    printf("%d ", i+1);
+                    ++k;
+                    break;
+                }
+            }
+
+            for(int j= 0; j<n; ++j)
+                visited[j] = 0;
+        }
+
+        if(!k)
+            printf("nenhum");
+
+        printf("\n\n");
+
+    }
+
+    return 0;
+}
