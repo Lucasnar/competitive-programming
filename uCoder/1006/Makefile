@@ -1,2 +1,2 @@
 all:
-	g++ ${file} -o $(basename ${file}) && ./$(basename ${file}) < input
+	g++ 1006.cpp -o 1006 && ./1006 < input

@@ -1,115 +1,63 @@
 #include<cstdio>
+#include<queue>
 
-int l, c;
-int x, y, valor, selecionado;
-int mtx[1100][1100];
-int marcado[1100][1100];
-int count;
+using namespace std;
 
-void verificar_direita(int i, int j);
-void verificar_cima(int i, int j);
-void verificar_baixo(int i, int j);
+const int maxn = 1024;
 
-void verificar_esquerda(int i, int j){
-    while(mtx[i][--j] == selecionado)
-        if(marcado[i][j] != 267){
-            ++count;
-            marcado[i][j] = 267;
-            verificar_cima(i, j);
-            verificar_baixo(i, j);
-            verificar_direita(i, j);
-        }
-    
-}
+int mtx[maxn][maxn];
+int visited[maxn][maxn];
 
-void verificar_direita(int i, int j){
-    while(mtx[i][++j] == selecionado)
-        if(marcado[i][j] != 267){
-            ++count;
-            marcado[i][j] = 267;
-            verificar_cima(i, j);
-            verificar_baixo(i, j);
-            verificar_esquerda(i, j);
-        }
-}
+int ii[] = {-1, 1, 0, 0};
+int jj[] = {0, 0, 1, -1};
 
-void verificar_cima(int i, int j){
-    while(mtx[--i][j] == selecionado)
-        if(marcado[i][j] != 267){
-            ++count;
-            marcado[i][j] = 267;
-            verificar_direita(i, j);
-            verificar_baixo(i, j);
-            verificar_esquerda(i, j);
-        }
-}
+int flood_fill(int x, int y){
+  queue<pair<int, int> > q;
+  int count = 0;
+  int cur_i, cur_j;
+  pair<int, int> v;
+  q.push(make_pair(x, y));
 
-void verificar_baixo(int i, int j){
-    while(mtx[++i][j] == selecionado)
-        if(marcado[i][j] != 267){
-            ++count;
-            marcado[i][j] = 267;
-            verificar_direita(i, j);
-            verificar_cima(i, j);
-            verificar_esquerda(i, j);
-        }
-}
+  while(!q.empty()){
+    v = q.front(); q.pop();
 
-void verificar(int i, int j){
-    verificar_baixo(i, j);
-    verificar_esquerda(i, j);
-    verificar_cima(i, j);
-    verificar_direita(i, j);
+    for(int i = 0; i<4; ++i){
+      cur_i = v.first + ii[i];
+      cur_j = v.second + jj[i];
+      if(!visited[cur_i][cur_j] &&
+          mtx[cur_i][cur_j] == mtx[v.first][v.second]){
+        visited[cur_i][cur_j] = 1;
+        ++count;
+        q.push(make_pair(cur_i, cur_j));
+      }
+    }
+  }
+
+  return count;
 }
 
 int main(){
+  int n, m, x, y;
 
-    while(true){
-        scanf(" %d %d", &l, &c);
-        if (l==0) break;
+  while(scanf(" %d %d", &n, &m) && (n || m)){
+    for(int i = 0; i<=n+1; ++i)
+      for(int j = 0; j<=m+1; ++j){
+        mtx[i][j] = -1;
+        visited[i][j] = 0;
+      }
 
-        count =0 ;
 
-        for (int i = 0; i<=l+1; ++i)
-            for (int j = 0; j<=c+1; ++j){
-                mtx[i][j] = -1;
-                marcado[i][j] = 266;
-            }
+    for(int i = 1; i<=n; ++i)
+      for(int j = 1; j<=m; ++j){
+        scanf(" %d", &x);
+        mtx[i][j] = x;
+      }
 
-        for (int i = 1; i<=l; ++i)
-            for (int j = 1; j<=c; ++j){
-                scanf(" %d", &valor);
-                mtx[i][j] = valor;
-            }
+    scanf(" %d %d", &x, &y);
 
-        scanf(" %d %d", &x, &y);
-        int x_original = x;
-        int y_original = y;
-        selecionado = mtx[x][y];
+    n = flood_fill(x, y);
+    printf("%d\n", n ? n : 1);
+  }
 
-        while(mtx[++x][y] == selecionado)
-            verificar(x, y);
-
-        x = x_original;
-        y = y_original;
-
-        while(mtx[x][--y] == selecionado)
-            verificar(x, y);
-
-        x = x_original;
-        y = y_original;
-
-        while(mtx[--x][y] == selecionado)
-            verificar(x, y);
-
-        x = x_original;
-        y = y_original;
-
-        while(mtx[x][++y] == selecionado)
-            verificar(x, y);
-
-        count  == 0? printf("1\n") : printf("%d\n", count);
-    }
-
-    return 0;
+  return 0;
 }
