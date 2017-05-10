@@ -1,3 +1,0 @@
-make[1]: Entering directory '/home/lucasnar/competitive-programming/uCoder/1153'
-g++ 1153.cpp -o 1153 && ./1153 < input
-Makefile:2: recipe for target 'all' failed
