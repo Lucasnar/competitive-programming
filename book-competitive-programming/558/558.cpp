@@ -22,7 +22,7 @@ int dist[maxn];
 typedef long long int huge;
 
 int main(){
-  int t, n, m, u, v, w;
+  int t, n, m, u, v, w, negative_cycle;
 
   scanf(" %d", &t);
 
@@ -38,21 +38,18 @@ int main(){
       adj[u].push_back(pii (v, w));
     }
 
-    dist[0] = 0;
+    // Bellman Ford’s
+    dist[0] = negative_cycle = 0;
     for(int i = 0; i<n; ++i){
       for(int u = 0; u<n; ++u){
         for(int v = 0; v<adj[u].size(); ++v){
-          dist[adj[u][v].first] =
-            min(dist[adj[u][v].first], dist[u] + adj[u][v].second);
-        }
-      }
-    }
-    int negative_cycle = 0;
-    for(int u = 0; u<n; ++u){
-      for(int v = 0; v<adj[u].size(); ++v){
-        if(dist[adj[u][v].first] > dist[u] + adj[u][v].second){
-          negative_cycle = 1;
-          goto end;
+          if(dist[adj[u][v].first] > dist[u] + adj[u][v].second){
+            dist[adj[u][v].first] = dist[u] + adj[u][v].second;
+            if(i == n-1) {
+              negative_cycle = 1;
+              goto end;
+            }
+          }
         }
       }
     }
