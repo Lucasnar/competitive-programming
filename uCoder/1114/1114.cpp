@@ -1,89 +1,66 @@
-// NAO RESOLVIDO
+#include<cstdio>
+#include<algorithm>
+#include<stdlib.h>
+#include<vector>
+#include<iostream>
+#include<map>
+#include<queue>
+#include<cstdlib>
+#include<cstring>
+#include<string>
+#include<set>
 
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <algorithm>
 using namespace std;
 
-typedef long long int huge;
 const int inf = 0x3f3f3f3f;
-const int maxn = 10100;
+const int maxn = 124;
 
-vector<pair<pair<int, int>, int> > adj[maxn];
-int mtx[100][100];
-int dist[maxn];
+typedef pair<int, int> pii;
+int mtx[maxn][maxn];
+int dist[maxn][maxn];
+int visited[maxn][maxn];
 
-void dijkstra(int start) {
-    int v = start;
-  dist[start]=0;
-  set<pair<int, int> > q;
-  q.insert(make_pair(dist[start], start));
-  while(!q.empty()) {
-    int current = q.begin()->second;
-    q.erase(q.begin());
-    for(auto it = adj[current].begin(); it!=adj[current].end(); ++it) {
-      int k = it->second;
-      v++;
-      if(dist[v] > dist[current]+k) {
-        auto tmp = q.find(make_pair(dist[v], v));
-        if (tmp!=q.end()) {
-          q.erase(tmp);
-        }
-        dist[v] = dist[current]+k;
-        q.insert(make_pair(dist[v], v));
+int ii[] = {-1, 0, 1, 0};
+int jj[] = {0, 1, 0, -1};
+
+void dj(pii start){
+  set<pair<int, pii> > pq;
+  pii cur, v;
+  dist[start.first][start.second] = 0;
+  pq.insert(pair<int, pii> (0, pii (start.first, start.second)));
+  while(!pq.empty()){
+    cur = pq.begin()->second;
+    pq.erase(pq.begin());
+    visited[cur.first][cur.second] = 1;
+
+    for(int i = 0; i<4; ++i){
+      v = pii (cur.first + ii[i], cur.second + jj[i]);
+      if( !visited[v.first][v.second] &&
+          dist[v.first][v.second] >
+          dist[cur.first][cur.second] + mtx[v.first][v.second]){
+        dist[v.first][v.second] =
+          dist[cur.first][cur.second] + mtx[v.first][v.second];
+        pq.insert(pair<int, pii> (dist[v.first][v.second], v));
       }
     }
   }
 }
 
-int main() {
-  int n, m, a, b;
+int main(){
+  int n;
   scanf(" %d", &n);
-  for(int i=0; i<n; ++i) {
-    adj[i].clear();
-    dist[i] = inf;
-  }
 
-  for(int i=0; i<=n+1; ++i)
-      for(int j=0; j<=n+1; ++j)
-          mtx[i][j] = 1;
+  for(int i = 0; i<=n+1; ++i)
+    for(int j = 0; j<=n+1; ++j){
+      mtx[i][j] = dist[i][j] = inf;
+      visited[i][j] = 0;
+    }
+  for(int i = 1; i<=n; ++i)
+    for(int j = 1; j<=n; ++j)
+      scanf(" %d", &mtx[i][j]);
 
-  for(int i=1; i<=n; ++i) {
-      for(int j=1; j<=n; ++j) {
-          scanf(" %d", &mtx[i][j]);
-      }
-  }
+  dj(pii (1, 1));
+  printf("%d\n", dist[n][n]);
 
-  for(int i=1, k=1; i<=n; ++i)
-      for(int j=1; j<=n; ++j){
-          if(mtx[i-1][j])
-              adj[k].push_back(make_pair(make_pair(i, j), 1));
-          else
-              adj[k].push_back(make_pair(make_pair(i, j), 0));
-
-          if(mtx[i][j+1])
-              adj[k].push_back(make_pair(make_pair(i, j), 1));
-          else
-              adj[k].push_back(make_pair(make_pair(i, j), 0));
-          
-          if(mtx[i+1][j])
-              adj[k].push_back(make_pair(make_pair(i, j), 1));
-          else
-              adj[k].push_back(make_pair(make_pair(i, j), 0));
-
-          if(mtx[i+1][j+1])
-              adj[k].push_back(make_pair(make_pair(i, j), 1));
-          else
-              adj[k].push_back(make_pair(make_pair(i, j), 0));
-          ++k;
-      }
-
-  dijkstra(1);
-  printf("%d\n", dist[n]);
   return 0;
 }
